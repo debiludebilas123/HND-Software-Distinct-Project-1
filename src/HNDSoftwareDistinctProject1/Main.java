@@ -20,11 +20,11 @@ public class Main {
         JPanel panel = new JPanel(cardLayout);
 
         // Creating class instances for display
-        MainMenu mainMenu = new MainMenu(frame);
         RouteManagement routeManagement = new RouteManagement(frame);
         CustomerManagement customerManagement = new CustomerManagement(frame);
         BookingManagement bookingManagement = new BookingManagement(frame);
         FlightManagement flightManagement = new FlightManagement(frame);
+        MainMenu mainMenu = new MainMenu(frame, customerManagement, bookingManagement, flightManagement, routeManagement);
 
         // Adding panels to the main panel which is connected to the card layout, so I can easily switch between each panel
         panel.add(mainMenu.getMainMenuPanel(), "MainMenu");

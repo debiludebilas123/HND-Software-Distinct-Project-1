@@ -59,7 +59,7 @@ public abstract class BaseManagementPanel {
 
     protected boolean isValidPhoneNum(String phoneNumber) {
         // Uses a regex to compare the given phone number to the correct format (+441234567890)
-        String regex = "^\\+44\\s?\\d{4}\\s?\\d{6}$";  // Regex for UK phone numbers
+        String regex = "^\\+\\d{2} \\d{2} \\d{4} \\d{4}$";  // Regex for UK phone numbers
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(phoneNumber);
         return matcher.matches();

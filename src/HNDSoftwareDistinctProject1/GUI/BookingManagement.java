@@ -5,7 +5,10 @@ import HNDSoftwareDistinctProject1.Models.Booking;
 import HNDSoftwareDistinctProject1.Services.ManagementController;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class BookingManagement extends BaseManagementPanel {
@@ -15,6 +18,7 @@ public class BookingManagement extends BaseManagementPanel {
     private JTextField bookingDateInput;
     private JButton clearBookingsButton;
     private JButton backToMenuButton;
+    final private List<Booking> bookingList = new ArrayList<>();
 
     public BookingManagement(JFrame frame) {
         super(frame, null, null);
@@ -24,6 +28,7 @@ public class BookingManagement extends BaseManagementPanel {
         String[] bookingTableColumns = {"bookingID", "bookingDate"};
         bookingManagementTable.setModel(ManagementController.createModel(bookingTableColumns));
 
+        clearTable();
         backToMenuButton.addActionListener(e -> switchToMainPanel());
         addInsurance();
     }
@@ -40,9 +45,22 @@ public class BookingManagement extends BaseManagementPanel {
                     bookingID,
                     LocalDate.parse(bookingDateInput.getText())
             );
-            // add booking
 
-            showSuccess("You have successfully added a booking to the table.");
+            bookingList.add(booking);
+
+            // add booking
+            DefaultTableModel model = (DefaultTableModel) bookingManagementTable.getModel();
+            model.addRow(new Object[]{booking.getBookingID(), booking.getBookingDate()});
+            bookingDateInput.setText("");
+            showSuccess("Booking successfully added!");
+        });
+    }
+
+    private void clearTable() {
+        clearBookingsButton.addActionListener(e -> {
+            DefaultTableModel model = (DefaultTableModel) bookingManagementTable.getModel();
+            model.setRowCount(0);
+            showSuccess("Table successfully cleared!");
         });
     }
 
@@ -66,5 +84,9 @@ public class BookingManagement extends BaseManagementPanel {
 
     public JPanel getBookingManagementPanel() {
         return bookingManagementPanel;
+    }
+
+    public List<Booking> getBookingList() {
+        return bookingList;
     }
 }

@@ -5,6 +5,9 @@ import HNDSoftwareDistinctProject1.Models.Customer;
 import HNDSoftwareDistinctProject1.Services.ManagementController;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class CustomerManagement extends BaseManagementPanel {
@@ -18,6 +21,7 @@ public class CustomerManagement extends BaseManagementPanel {
     private JButton backToMenuButton;
     private JTextField phoneInput;
     private JTextField addressInput;
+    private final List<Customer> customers = new ArrayList<>();
 
     public CustomerManagement(JFrame frame) {
         super(frame, null, null);
@@ -27,6 +31,7 @@ public class CustomerManagement extends BaseManagementPanel {
         String[] customerTableColumns = {"customerID", "firstName", "lastName", "email", "phone", "address"};
         customerManagementTable.setModel(ManagementController.createModel(customerTableColumns));
 
+        clearTable();
         backToMenuButton.addActionListener(e -> switchToMainPanel());
         addCustomerRecord();
     }
@@ -40,20 +45,35 @@ public class CustomerManagement extends BaseManagementPanel {
 
             Customer customer = new Customer(
                     customerID,
-                    firstNameInput.getText(),
-                    lastNameInput.getText(),
+                    firstNameInput.getText().substring(0,1).toUpperCase() + firstNameInput.getText().substring(1),
+                    lastNameInput.getText().substring(0,1).toUpperCase() + lastNameInput.getText().substring(1),
                     emailInput.getText(),
                     phoneInput.getText(),
                     addressInput.getText()
             );
-            // Add to table
 
+            // Add to table
+            DefaultTableModel model = (DefaultTableModel) customerManagementTable.getModel();
+            model.addRow(new Object[]{customer.getCustomerID(), customer.getFirstName(), customer.getLastName(), customer.getEmail(), customer.getPhone(), customer.getAddress()});
+            firstNameInput.setText("");
+            lastNameInput.setText("");
+            emailInput.setText("");
+            phoneInput.setText("");
+            addressInput.setText("");
             showSuccess("Customer added successfully!");
+
+            String phoneNum = customer.getPhone().replaceAll(" ", "");
+            customer.setPhone(phoneNum);
+            customers.add(customer);
         });
     }
 
-    protected void clearDataTable() {
-        customerManagementTable.removeAll();
+    private void clearTable() {
+        clearCustomersButton.addActionListener(e -> {
+            DefaultTableModel model = (DefaultTableModel) customerManagementTable.getModel();
+            model.setRowCount(0);
+            showSuccess("Table successfully cleared!");
+        });
     }
 
     @Override
@@ -92,5 +112,9 @@ public class CustomerManagement extends BaseManagementPanel {
 
     public JPanel getCustomerManagementPanel() {
         return customerManagementPanel;
+    }
+
+    public List<Customer> getCustomerList() {
+        return customers;
     }
 }

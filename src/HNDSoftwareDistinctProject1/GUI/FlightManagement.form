@@ -34,7 +34,7 @@
         <properties>
           <horizontalAlignment value="2"/>
           <horizontalTextPosition value="11"/>
-          <text value="&lt;html&gt;YYYY-MM-DD&lt;br&gt;Departure Date and Time:&lt;/html&gt;"/>
+          <text value="&lt;html&gt;YYYY-MM-DD HH:MM&lt;br&gt;Departure Date and Time:&lt;/html&gt;"/>
           <verticalAlignment value="0"/>
           <verticalTextPosition value="0"/>
         </properties>
@@ -49,12 +49,12 @@
       </component>
       <component id="f7e87" class="javax.swing.JLabel">
         <constraints>
-          <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+          <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="1" indent="0" use-parent-layout="false">
             <preferred-size width="120" height="17"/>
           </grid>
         </constraints>
         <properties>
-          <text value="&lt;html&gt;YYYY-MM-DD&lt;br&gt;Arrival Date and Time:&lt;/html&gt;"/>
+          <text value="&lt;html&gt;YYYY-MM-DD HH:MM&lt;br&gt;Arrival Date and Time:&lt;/html&gt;"/>
         </properties>
       </component>
       <component id="de86f" class="javax.swing.JTextField" binding="flightNumberInput">

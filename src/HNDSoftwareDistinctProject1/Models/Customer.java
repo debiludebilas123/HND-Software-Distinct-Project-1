@@ -42,4 +42,8 @@ public class Customer {
     public String getLastName() {
         return lastName;
     }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 }
