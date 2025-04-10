@@ -22,8 +22,8 @@ public class Main {
         // Creating class instances for display
         RouteManagement routeManagement = new RouteManagement(frame);
         CustomerManagement customerManagement = new CustomerManagement(frame);
-        BookingManagement bookingManagement = new BookingManagement(frame);
-        FlightManagement flightManagement = new FlightManagement(frame);
+        FlightManagement flightManagement = new FlightManagement(frame, routeManagement);
+        BookingManagement bookingManagement = new BookingManagement(frame, customerManagement, flightManagement);
         MainMenu mainMenu = new MainMenu(frame, customerManagement, bookingManagement, flightManagement, routeManagement);
 
         // Adding panels to the main panel which is connected to the card layout, so I can easily switch between each panel

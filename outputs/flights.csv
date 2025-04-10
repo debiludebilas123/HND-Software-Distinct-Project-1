@@ -1,2 +1,2 @@
-flightID,flightNumber,departureAirport,arrivalAirport,departureDateTime,arrivalDateTime,capacity
-FLI-b38ae8e9-7,12,LSI,VNO,2020-10-10T20:20,2020-10-10T20:20,2
+flightID,flightNumber,departureAirport,arrivalAirport,departureDateTime,arrivalDateTime,capacity,routeID
+FLIG-01,12,IBZ,IBZ,2020-12-20T20:20,2020-12-20T20:20,12,ROUT-01

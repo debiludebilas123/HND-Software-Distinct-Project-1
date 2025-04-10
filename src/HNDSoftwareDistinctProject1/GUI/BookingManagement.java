@@ -2,14 +2,16 @@ package HNDSoftwareDistinctProject1.GUI;
 
 import HNDSoftwareDistinctProject1.Models.BaseManagementPanel;
 import HNDSoftwareDistinctProject1.Models.Booking;
+import HNDSoftwareDistinctProject1.Models.Customer;
+import HNDSoftwareDistinctProject1.Models.Flight;
 import HNDSoftwareDistinctProject1.Services.ManagementController;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.event.HierarchyEvent;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class BookingManagement extends BaseManagementPanel {
     private JButton addBookingButton;
@@ -21,19 +23,50 @@ public class BookingManagement extends BaseManagementPanel {
     private JTextField adultTicketInput;
     private JTextField childTicketInput;
     private JTextField concessionTicketInput;
+    private JComboBox customerIDComboBox;
+    private JComboBox flightIDComboBox;
     final private List<Booking> bookingList = new ArrayList<>();
+    private final CustomerManagement customerManagement;
+    private final FlightManagement flightManagement;
 
-    public BookingManagement(JFrame frame) {
+    public BookingManagement(JFrame frame, CustomerManagement customerManagement, FlightManagement flightManagement) {
         super(frame, null, null);
         this.panel = bookingManagementPanel;
         this.table = bookingManagementTable;
+        this.customerManagement = customerManagement;
+        this.flightManagement = flightManagement;
 
-        String[] bookingTableColumns = {"Booking ID", "Booking Date", "Adult Tickets", "Child Tickets", "Concession Tickets"};
+        refreshComboBoxes();
+
+        String[] bookingTableColumns = {"Booking ID", "Booking Date", "Adult Tickets", "Child Tickets", "Concession Tickets", "Customer ID", "Flight ID"};
         bookingManagementTable.setModel(ManagementController.createModel(bookingTableColumns));
 
         clearTable();
         backToMenuButton.addActionListener(e -> switchToMainPanel());
         addInsurance();
+    }
+
+    public void refreshComboBoxes() {
+        panel.addHierarchyListener(e -> {
+            if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0) {
+                if (panel.isShowing()) {
+                    populateComboBoxes();
+                }
+            }
+        });
+    }
+
+    public void populateComboBoxes() {
+        customerIDComboBox.removeAllItems();
+        flightIDComboBox.removeAllItems();
+
+        for (Customer customer : customerManagement.getCustomerList()) {
+            customerIDComboBox.addItem(customer.getCustomerID());
+        }
+
+        for (Flight flight : flightManagement.getFlightList()) {
+            flightIDComboBox.addItem(flight.getFlightID());
+        }
     }
 
     private void addInsurance() {
@@ -43,20 +76,23 @@ public class BookingManagement extends BaseManagementPanel {
             }
 
             // Create booking ID
-            String bookingID = "BOO-" + UUID.randomUUID().toString().substring(0, 10);
+            String bookingID = "BOOK-" + getBookingList().size() + 1;
             Booking booking = new Booking(
                     bookingID,
                     LocalDate.parse(bookingDateInput.getText()),
                     Integer.parseInt(adultTicketInput.getText()),
                     Integer.parseInt(childTicketInput.getText()),
-                    Integer.parseInt(concessionTicketInput.getText())
+                    Integer.parseInt(concessionTicketInput.getText()),
+                    customerIDComboBox.getSelectedItem().toString(),
+                    flightIDComboBox.getSelectedItem().toString()
             );
 
             bookingList.add(booking);
 
             // add booking
             DefaultTableModel model = (DefaultTableModel) bookingManagementTable.getModel();
-            model.addRow(new Object[]{booking.getBookingID(), booking.getBookingDate(), booking.getAdultTicket(), booking.getChildTicket(), booking.getConcessionTicket()});
+            model.addRow(new Object[]{booking.getBookingID(), booking.getBookingDate(), booking.getAdultTicket(), booking.getChildTicket(),
+                    booking.getConcessionTicket(), booking.getCustomerID(), booking.getFlightID()});
             bookingDateInput.setText("");
             adultTicketInput.setText("");
             childTicketInput.setText("");
@@ -93,6 +129,16 @@ public class BookingManagement extends BaseManagementPanel {
             return false;
         }
 
+        if (customerIDComboBox.getSelectedItem() == null) {
+            showError("Please create a customer record to get a customer ID!");
+            return false;
+        }
+
+        if (flightIDComboBox.getSelectedItem() == null) {
+            showError("Please create a flight record to get a flight ID!");
+            return false;
+        }
+
         return true;
     }
 
@@ -112,4 +158,6 @@ public class BookingManagement extends BaseManagementPanel {
     public List<Booking> getBookingList() {
         return bookingList;
     }
+
+
 }

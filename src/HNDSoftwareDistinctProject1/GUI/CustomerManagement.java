@@ -8,7 +8,6 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class CustomerManagement extends BaseManagementPanel {
     private JButton addCustomerButton;
@@ -40,7 +39,7 @@ public class CustomerManagement extends BaseManagementPanel {
 
     private void addCustomerRecord() {
         addCustomerButton.addActionListener(e -> {
-            String customerID = UUID.randomUUID().toString().substring(0, 10);
+            String customerID = "CUST-"+getCustomerList().size()+1;
             if (!validateInputs()) {
                 return;
             }
@@ -123,6 +122,6 @@ public class CustomerManagement extends BaseManagementPanel {
     }
 
     public List<Customer> getCustomerList() {
-        return customers;
+        return this.customers;
     }
 }

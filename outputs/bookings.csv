@@ -1,2 +1,2 @@
-bookingID,bookingDate,adultTicket,childTicket,concessionTicket
-BOO-bc9f68d2-e,2020-10-10,1,2,3
+bookingID,bookingDate,adultTicket,childTicket,concessionTicket,customerID,flightID
+BOOK-01,2020-10-10,12,12,1,CUST-01,FLIG-01

@@ -1,7 +1,5 @@
 package HNDSoftwareDistinctProject1.Models;
 
-import java.util.UUID;
-
 public class Customer {
     private String customerID;
     private String firstName;
@@ -13,7 +11,7 @@ public class Customer {
     private String postcode;
 
     public Customer(String customerID, String firstName, String lastName, String email, String phone, String street, String town, String postcode) {
-        this.customerID = (customerID != null) ? customerID : "CUS-" + UUID.randomUUID().toString().substring(0, 10);
+        this.customerID = customerID;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;

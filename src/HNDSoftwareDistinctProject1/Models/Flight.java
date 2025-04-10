@@ -1,7 +1,6 @@
 package HNDSoftwareDistinctProject1.Models;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 public class Flight {
     private String flightID;
@@ -11,15 +10,18 @@ public class Flight {
     private LocalDateTime departureDateTime;
     private LocalDateTime arrivalDateTime;
     private int capacity;
+    private String routeID;
 
-    public Flight(String flightID, int flightNumber, String departureAirport, String arrivalAirport, LocalDateTime departureDateTime, LocalDateTime arrivalDateTime, int capacity) {
-        this.flightID = (flightID != null) ? flightID : "FLI-" + UUID.randomUUID().toString().substring(0, 10);
+    public Flight(String flightID, int flightNumber, String departureAirport, String arrivalAirport, LocalDateTime departureDateTime, LocalDateTime arrivalDateTime,
+                  int capacity, String routeID) {
+        this.flightID = flightID;
         this.flightNumber = flightNumber;
         this.departureAirport = departureAirport;
         this.arrivalAirport = arrivalAirport;
         this.departureDateTime = departureDateTime;
         this.arrivalDateTime = arrivalDateTime;
         this.capacity = capacity;
+        this.routeID = routeID;
     }
 
     public String getArrivalAirport() {
@@ -48,6 +50,10 @@ public class Flight {
 
     public int getCapacity() {
         return capacity;
+    }
+
+    public String getRouteID() {
+        return routeID;
     }
 }
 

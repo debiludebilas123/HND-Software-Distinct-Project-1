@@ -1,7 +1,6 @@
 package HNDSoftwareDistinctProject1.Models;
 
 import java.time.LocalDate;
-import java.util.UUID;
 
 public class Booking {
     private String bookingID;
@@ -9,13 +8,17 @@ public class Booking {
     private int adultTicket;
     private int childTicket;
     private int concessionTicket;
+    private String customerID;
+    private String flightID;
 
-    public Booking(String bookingID, LocalDate bookingDate, int adultTicket, int childTicket, int concessionTicket) {
-        this.bookingID = (bookingID != null) ? bookingID : "BOO-" + UUID.randomUUID().toString().substring(0, 10);
+    public Booking(String bookingID, LocalDate bookingDate, int adultTicket, int childTicket, int concessionTicket, String customerID, String flightID) {
+        this.bookingID = bookingID;
         this.bookingDate = bookingDate;
         this.adultTicket = adultTicket;
         this.childTicket = childTicket;
         this.concessionTicket = concessionTicket;
+        this.customerID = customerID;
+        this.flightID = flightID;
     }
 
     public String getBookingID() {
@@ -36,5 +39,13 @@ public class Booking {
 
     public int getConcessionTicket() {
         return concessionTicket;
+    }
+
+    public String getFlightID() {
+        return flightID;
+    }
+
+    public String getCustomerID() {
+        return customerID;
     }
 }

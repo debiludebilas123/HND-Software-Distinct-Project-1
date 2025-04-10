@@ -37,8 +37,8 @@ public class MainMenu {
         // Triggers for when buttons are pressed
         // Switching panels
         customerManagementButton.addActionListener(e -> PanelSwitcher.switchPanel(mainMenuPanel, "CustomerManagement", frame, 750, 600));
-        bookingManagementButton.addActionListener(e -> PanelSwitcher.switchPanel(mainMenuPanel, "BookingManagement", frame, 620, 450));
-        flightManagementButton.addActionListener(e -> PanelSwitcher.switchPanel(mainMenuPanel, "FlightManagement", frame, 850, 600));
+        bookingManagementButton.addActionListener(e -> PanelSwitcher.switchPanel(mainMenuPanel, "BookingManagement", frame, 920, 450));
+        flightManagementButton.addActionListener(e -> PanelSwitcher.switchPanel(mainMenuPanel, "FlightManagement", frame, 1000, 600));
         routeManagementButton.addActionListener(e -> PanelSwitcher.switchPanel(mainMenuPanel, "RouteManagement", frame, 500, 500));
 
         // Export button

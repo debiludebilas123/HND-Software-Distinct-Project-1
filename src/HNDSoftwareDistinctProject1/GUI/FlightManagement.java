@@ -5,13 +5,13 @@ import HNDSoftwareDistinctProject1.Services.ManagementController;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.event.HierarchyEvent;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 public class FlightManagement extends BaseManagementPanel {
     private JPanel flightManagementPanel;
@@ -25,24 +25,38 @@ public class FlightManagement extends BaseManagementPanel {
     private JComboBox departureAirportComboBox;
     private JComboBox arrivalAirportComboBox;
     private JTextField capacityInput;
+    private JComboBox routeIDComboBox;
     final private String[] airportList = {"IBZ", "GLA", "MMX", "VNO", "SAW", "NAP", "LPL", "ATH", "MAN", "STN", "BFS", "LGW", "BHX", "HEL", "ABZ", "SVQ", "EDI",
             "BRS", "LHR", "ARN", "FRA", "CHQ", "BCN", "LAX", "MUC", "FCO", "BUD", "LSI", "LIS", "DUB"};
     final private List<Flight> flightList = new ArrayList<>();
+    private final RouteManagement routeManagement;
 
-    public FlightManagement(JFrame frame) {
+    public FlightManagement(JFrame frame, RouteManagement routeManagement) {
         super(frame, null, null);
         this.panel = flightManagementPanel;
         this.table = flightManagementTable;
+        this.routeManagement = routeManagement;
 
-        populateComboBoxes();
+        refreshComboBoxes();
 
-        String[] flightTableColumns = {"Flight ID", "Flight Number", "Departure Airport", "Arrival Airport", "Departure Date Time", "Arrival Date Time", "Capacity"};
+        String[] flightTableColumns = {"Flight ID", "Flight Number", "Departure Airport", "Arrival Airport", "Departure Date Time",
+                "Arrival Date Time", "Capacity", "Route ID"};
         flightManagementTable.setModel(ManagementController.createModel(flightTableColumns));
 
         clearTable();
         backToMenuButton.addActionListener(e -> switchToMainPanel());
         addPrescription();
 
+    }
+
+    private void refreshComboBoxes() {
+        panel.addHierarchyListener(e -> {
+            if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0) {
+                if (panel.isShowing()) {
+                    populateComboBoxes();
+                }
+            }
+        });
     }
 
     private void addPrescription() {
@@ -52,7 +66,7 @@ public class FlightManagement extends BaseManagementPanel {
             }
 
             // Create a flight ID to input
-            String flightID = "FLI-" + UUID.randomUUID().toString().substring(0, 10);
+            String flightID = "FLIG-" + flightList.size() + 1;
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
             Flight flight = new Flight(
@@ -62,14 +76,16 @@ public class FlightManagement extends BaseManagementPanel {
                     Objects.requireNonNull(arrivalAirportComboBox.getSelectedItem()).toString(),
                     LocalDateTime.parse(departureDateTimeInput.getText(), formatter),
                     LocalDateTime.parse(arrivalDateTimeInput.getText(), formatter),
-                    Integer.parseInt(capacityInput.getText())
+                    Integer.parseInt(capacityInput.getText()),
+                    routeIDComboBox.getSelectedItem().toString()
             );
 
             flightList.add(flight);
 
             // add flight to table
             DefaultTableModel model = (DefaultTableModel) flightManagementTable.getModel();
-            model.addRow(new Object[]{flight.getFlightID(), flight.getFlightNumber(), flight.getDepartureAirport(), flight.getArrivalAirport(), flight.getDepartureDateTime(), flight.getArrivalDateTime(), flight.getCapacity()});
+            model.addRow(new Object[]{flight.getFlightID(), flight.getFlightNumber(), flight.getDepartureAirport(), flight.getArrivalAirport(),
+                    flight.getDepartureDateTime(), flight.getArrivalDateTime(), flight.getCapacity(), flight.getRouteID()});
             flightNumberInput.setText("");
             departureDateTimeInput.setText("");
             arrivalDateTimeInput.setText("");
@@ -124,6 +140,11 @@ public class FlightManagement extends BaseManagementPanel {
             return false;
         }
 
+        if (routeIDComboBox.getSelectedItem() == null) {
+            showError("Please create a route record to get a route ID!");
+            return false;
+        }
+
         return true;
     }
 
@@ -131,6 +152,13 @@ public class FlightManagement extends BaseManagementPanel {
         for (String airport : airportList) {
             departureAirportComboBox.addItem(airport);
             arrivalAirportComboBox.addItem(airport);
+        }
+
+        routeIDComboBox.removeAllItems();
+
+        List<Route> routeList = routeManagement.getRouteList();
+        for (Route route : routeList) {
+            routeIDComboBox.addItem(route.getRouteID());
         }
     }
 
@@ -150,6 +178,6 @@ public class FlightManagement extends BaseManagementPanel {
     }
 
     public List<Flight> getFlightList() {
-        return flightList;
+        return this.flightList;
     }
 }

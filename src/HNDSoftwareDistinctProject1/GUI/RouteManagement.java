@@ -7,7 +7,6 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class RouteManagement extends BaseManagementPanel {
     private JTextField routeNameInput;
@@ -40,7 +39,7 @@ public class RouteManagement extends BaseManagementPanel {
             }
 
             // Generate a routeID
-            String routeID = "ROU-" + UUID.randomUUID().toString().substring(0, 10);
+            String routeID = "ROUT-" + routeList.size() + 1;
 
             // Create a route object to insert into the database
             Route route = new Route(
@@ -85,9 +84,9 @@ public class RouteManagement extends BaseManagementPanel {
             return false;
         }
 
-        String firstPart = values[0].toString().substring(0,2);
+        String firstPart = values[0].toString().substring(0, 2);
         String secondPart = values[0].toString().substring(3);
-        String thirdPart = values[0].toString().substring(4,6);
+        String thirdPart = values[0].toString().substring(4, 6);
 
         for (int i = 0; i < firstPart.length(); i++) {
             if (firstPart.charAt(i) >= 'A' && firstPart.charAt(i) <= 'Z') {
@@ -117,11 +116,16 @@ public class RouteManagement extends BaseManagementPanel {
             return false;
         }
 
+        if (values[1].toString().length() != 3 || values[2].toString().length() != 3) {
+            showError("Please enter a valid stop. Format - XYZ");
+            return false;
+        }
+
         for (int i = 0; i < 3; i++) {
             char temp = values[1].toString().charAt(i);
             char temp2 = values[2].toString().charAt(i);
             if (!Character.isLetter(temp) || !Character.isLetter(temp2)) {
-                showError("Please enter a valid route ID. Format - XYZ");
+                showError("Please enter a valid stop. Format - XYZ");
                 return false;
             }
         }
