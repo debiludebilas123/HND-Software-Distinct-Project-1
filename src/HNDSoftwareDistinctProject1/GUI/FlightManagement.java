@@ -24,6 +24,7 @@ public class FlightManagement extends BaseManagementPanel {
     private JButton backToMenuButton;
     private JComboBox departureAirportComboBox;
     private JComboBox arrivalAirportComboBox;
+    private JTextField capacityInput;
     final private String[] airportList = {"IBZ", "GLA", "MMX", "VNO", "SAW", "NAP", "LPL", "ATH", "MAN", "STN", "BFS", "LGW", "BHX", "HEL", "ABZ", "SVQ", "EDI",
             "BRS", "LHR", "ARN", "FRA", "CHQ", "BCN", "LAX", "MUC", "FCO", "BUD", "LSI", "LIS", "DUB"};
     final private List<Flight> flightList = new ArrayList<>();
@@ -35,7 +36,7 @@ public class FlightManagement extends BaseManagementPanel {
 
         populateComboBoxes();
 
-        String[] flightTableColumns = {"flightID", "flightNumber", "departureAirport", "arrivalAirport", "departureDateTime", "arrivalDateTime"};
+        String[] flightTableColumns = {"Flight ID", "Flight Number", "Departure Airport", "Arrival Airport", "Departure Date Time", "Arrival Date Time", "Capacity"};
         flightManagementTable.setModel(ManagementController.createModel(flightTableColumns));
 
         clearTable();
@@ -56,21 +57,23 @@ public class FlightManagement extends BaseManagementPanel {
 
             Flight flight = new Flight(
                     flightID,
-                    flightNumberInput.getText(),
+                    Integer.parseInt(flightNumberInput.getText()),
                     Objects.requireNonNull(departureAirportComboBox.getSelectedItem()).toString(),
                     Objects.requireNonNull(arrivalAirportComboBox.getSelectedItem()).toString(),
                     LocalDateTime.parse(departureDateTimeInput.getText(), formatter),
-                    LocalDateTime.parse(arrivalDateTimeInput.getText(), formatter)
+                    LocalDateTime.parse(arrivalDateTimeInput.getText(), formatter),
+                    Integer.parseInt(capacityInput.getText())
             );
 
             flightList.add(flight);
 
             // add flight to table
             DefaultTableModel model = (DefaultTableModel) flightManagementTable.getModel();
-            model.addRow(new Object[]{flight.getFlightID(), flight.getFlightNumber(), flight.getDepartureAirport(), flight.getArrivalAirport(), flight.getDepartureDateTime(), flight.getArrivalDateTime()});
+            model.addRow(new Object[]{flight.getFlightID(), flight.getFlightNumber(), flight.getDepartureAirport(), flight.getArrivalAirport(), flight.getDepartureDateTime(), flight.getArrivalDateTime(), flight.getCapacity()});
             flightNumberInput.setText("");
             departureDateTimeInput.setText("");
             arrivalDateTimeInput.setText("");
+            capacityInput.setText("");
             showSuccess("Flight successfully added!");
         });
     }
@@ -94,6 +97,11 @@ public class FlightManagement extends BaseManagementPanel {
             return false;
         }
 
+        if (!isObjectInteger(values[0])) {
+            showError("Please enter a valid flight number!");
+            return false;
+        }
+
         try {
             // Parse departure time
             LocalDateTime departure = LocalDateTime.parse(values[3].toString(), formatter);
@@ -108,6 +116,11 @@ public class FlightManagement extends BaseManagementPanel {
 
         } catch (DateTimeParseException e) {
             showError("Date/time must be in YYYY-MM-DD HH:MM format\nExample: 2023-12-31 14:30");
+            return false;
+        }
+
+        if (!isObjectInteger(values[5])) {
+            showError("Please enter a number for the capacity!");
             return false;
         }
 
@@ -127,8 +140,9 @@ public class FlightManagement extends BaseManagementPanel {
         String arrivalAirport = Objects.requireNonNull(arrivalAirportComboBox.getSelectedItem()).toString();
         String departureDateTime = departureDateTimeInput.getText();
         String arrivalDateTime = arrivalDateTimeInput.getText();
+        String capacity = capacityInput.getText();
 
-        return new Object[]{flightNumber, departureAirport, arrivalAirport, departureDateTime, arrivalDateTime};
+        return new Object[]{flightNumber, departureAirport, arrivalAirport, departureDateTime, arrivalDateTime, capacity};
     }
 
     public JPanel getFlightManagementPanel() {

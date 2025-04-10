@@ -8,23 +8,27 @@ public class Customer {
     private String lastName;
     private String email;
     private String phone;
-    private String address;
+    private String street;
+    private String town;
+    private String postcode;
 
-    public Customer(String customerID, String firstName, String lastName, String email, String phone, String address) {
+    public Customer(String customerID, String firstName, String lastName, String email, String phone, String street, String town, String postcode) {
         this.customerID = (customerID != null) ? customerID : "CUS-" + UUID.randomUUID().toString().substring(0, 10);
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phone = phone;
-        this.address = address;
+        this.street = street;
+        this.town = town;
+        this.postcode = postcode;
     }
 
     public String getPhone() {
         return phone;
     }
 
-    public String getAddress() {
-        return address;
+    public String getStreet() {
+        return street;
     }
 
     public String getEmail() {
@@ -41,6 +45,14 @@ public class Customer {
 
     public String getLastName() {
         return lastName;
+    }
+
+    public String getPostcode() {
+        return postcode;
+    }
+
+    public String getTown() {
+        return town;
     }
 
     public void setPhone(String phone) {

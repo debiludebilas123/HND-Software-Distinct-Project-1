@@ -23,10 +23,6 @@ public abstract class BaseManagementPanel {
     // Mandatory method for all management panels to validate inputs
     protected abstract boolean validateInputs();
 
-    protected void clearDataTable() {
-
-    }
-
     protected boolean isObjectInteger(Object o) {
         // Tries parsing the object o as an int and if it pops an error out that means it isn't and vice versa
         try {
@@ -82,9 +78,4 @@ public abstract class BaseManagementPanel {
     protected void showSuccess(String message) {
         JOptionPane.showMessageDialog(parentFrame, message, "Success", JOptionPane.INFORMATION_MESSAGE);
     }
-
-    protected void showInfo(String message) {
-        JOptionPane.showMessageDialog(parentFrame, message, "Info", JOptionPane.INFORMATION_MESSAGE);
-    }
-
 }

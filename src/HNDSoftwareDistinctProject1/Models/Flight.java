@@ -5,19 +5,21 @@ import java.util.UUID;
 
 public class Flight {
     private String flightID;
-    private String flightNumber;
+    private int flightNumber;
     private String departureAirport;
     private String arrivalAirport;
     private LocalDateTime departureDateTime;
     private LocalDateTime arrivalDateTime;
+    private int capacity;
 
-    public Flight(String flightID, String flightNumber, String departureAirport, String arrivalAirport, LocalDateTime departureDateTime, LocalDateTime arrivalDateTime) {
+    public Flight(String flightID, int flightNumber, String departureAirport, String arrivalAirport, LocalDateTime departureDateTime, LocalDateTime arrivalDateTime, int capacity) {
         this.flightID = (flightID != null) ? flightID : "FLI-" + UUID.randomUUID().toString().substring(0, 10);
         this.flightNumber = flightNumber;
         this.departureAirport = departureAirport;
         this.arrivalAirport = arrivalAirport;
         this.departureDateTime = departureDateTime;
         this.arrivalDateTime = arrivalDateTime;
+        this.capacity = capacity;
     }
 
     public String getArrivalAirport() {
@@ -40,8 +42,12 @@ public class Flight {
         return flightID;
     }
 
-    public String getFlightNumber() {
+    public int getFlightNumber() {
         return flightNumber;
+    }
+
+    public int getCapacity() {
+        return capacity;
     }
 }
 

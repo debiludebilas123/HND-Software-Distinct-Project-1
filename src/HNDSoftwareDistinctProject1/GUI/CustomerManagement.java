@@ -20,7 +20,9 @@ public class CustomerManagement extends BaseManagementPanel {
     private JButton clearCustomersButton;
     private JButton backToMenuButton;
     private JTextField phoneInput;
-    private JTextField addressInput;
+    private JTextField streetInput;
+    private JTextField townInput;
+    private JTextField postcodeInput;
     private final List<Customer> customers = new ArrayList<>();
 
     public CustomerManagement(JFrame frame) {
@@ -28,7 +30,7 @@ public class CustomerManagement extends BaseManagementPanel {
         this.panel = customerManagementPanel;
         this.table = customerManagementTable;
 
-        String[] customerTableColumns = {"customerID", "firstName", "lastName", "email", "phone", "address"};
+        String[] customerTableColumns = {"Customer ID", "First Name", "Last Name", "Email", "Phone", "Street", "Town", "Postcode"};
         customerManagementTable.setModel(ManagementController.createModel(customerTableColumns));
 
         clearTable();
@@ -49,17 +51,21 @@ public class CustomerManagement extends BaseManagementPanel {
                     lastNameInput.getText().substring(0,1).toUpperCase() + lastNameInput.getText().substring(1),
                     emailInput.getText(),
                     phoneInput.getText(),
-                    addressInput.getText()
+                    streetInput.getText(),
+                    townInput.getText(),
+                    postcodeInput.getText()
             );
 
             // Add to table
             DefaultTableModel model = (DefaultTableModel) customerManagementTable.getModel();
-            model.addRow(new Object[]{customer.getCustomerID(), customer.getFirstName(), customer.getLastName(), customer.getEmail(), customer.getPhone(), customer.getAddress()});
+            model.addRow(new Object[]{customer.getCustomerID(), customer.getFirstName(), customer.getLastName(), customer.getEmail(), customer.getPhone(), customer.getStreet(), customer.getTown(), customer.getPostcode()});
             firstNameInput.setText("");
             lastNameInput.setText("");
             emailInput.setText("");
             phoneInput.setText("");
-            addressInput.setText("");
+            streetInput.setText("");
+            townInput.setText("");
+            postcodeInput.setText("");
             showSuccess("Customer added successfully!");
 
             String phoneNum = customer.getPhone().replaceAll(" ", "");
@@ -81,7 +87,7 @@ public class CustomerManagement extends BaseManagementPanel {
         Object[] values = getCustomerInputValues();
 
         // Check if any inputs are empty
-        if (values[0].toString().isEmpty() || values[1].toString().isEmpty() || values[2].toString().isEmpty() || values[3].toString().isEmpty() || values[4].toString().isEmpty()) {
+        if (values[0].toString().isEmpty() || values[1].toString().isEmpty() || values[2].toString().isEmpty() || values[3].toString().isEmpty() || values[4].toString().isEmpty() || values[5].toString().isEmpty() || values[6].toString().isEmpty()) {
             showError("Please fill all the fields.");
             return false;
         }
@@ -105,9 +111,11 @@ public class CustomerManagement extends BaseManagementPanel {
         String lastName = lastNameInput.getText();
         String email = emailInput.getText();
         String phone = phoneInput.getText();
-        String address = addressInput.getText();
+        String street = streetInput.getText();
+        String town = townInput.getText();
+        String postcode = postcodeInput.getText();
 
-        return new Object[]{firstName, lastName, email, phone, address};
+        return new Object[]{firstName, lastName, email, phone, street, town, postcode};
     }
 
     public JPanel getCustomerManagementPanel() {

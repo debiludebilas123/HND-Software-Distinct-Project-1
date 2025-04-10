@@ -16,6 +16,8 @@ public class RouteManagement extends BaseManagementPanel {
     private JTable routeManagementTable;
     private JButton clearRoutesButton;
     private JButton backToMenuButton;
+    private JTextField midStopOneInput;
+    private JTextField midStopTwoInput;
     final private List<Route> routeList = new ArrayList<>();
 
     public RouteManagement(JFrame frame) {
@@ -23,7 +25,7 @@ public class RouteManagement extends BaseManagementPanel {
         this.panel = routeManagementPanel;
         this.table = routeManagementTable;
 
-        String[] routeTableColumns = {"routeID", "routeName"};
+        String[] routeTableColumns = {"Route ID", "Route Name", "Mid Stop One", "Mid Stop Two"};
         routeManagementTable.setModel(ManagementController.createModel(routeTableColumns));
 
         clearTable();
@@ -43,15 +45,19 @@ public class RouteManagement extends BaseManagementPanel {
             // Create a route object to insert into the database
             Route route = new Route(
                     routeID,
-                    routeNameInput.getText()
+                    routeNameInput.getText().toUpperCase(),
+                    midStopOneInput.getText().toUpperCase(),
+                    midStopTwoInput.getText().toUpperCase()
             );
 
             routeList.add(route);
 
             // add route
             DefaultTableModel model = (DefaultTableModel) routeManagementTable.getModel();
-            model.addRow(new Object[]{route.getRouteID(), route.getRouteName()});
+            model.addRow(new Object[]{route.getRouteID(), route.getRouteName(), route.getMidStopOne(), route.getMidStopTwo()});
             routeNameInput.setText("");
+            midStopOneInput.setText("");
+            midStopTwoInput.setText("");
             showSuccess("Route successfully added!");
         });
     }
@@ -106,13 +112,29 @@ public class RouteManagement extends BaseManagementPanel {
             }
         }
 
+        if (isObjectInteger(values[1]) || isObjectInteger(values[2])) {
+            showError("Please enter a valid route ID.");
+            return false;
+        }
+
+        for (int i = 0; i < 3; i++) {
+            char temp = values[1].toString().charAt(i);
+            char temp2 = values[2].toString().charAt(i);
+            if (!Character.isLetter(temp) || !Character.isLetter(temp2)) {
+                showError("Please enter a valid route ID. Format - XYZ");
+                return false;
+            }
+        }
+
         return true;
     }
 
     private Object[] getVisitInputValues() {
         String routeName = routeNameInput.getText();
+        String midStopOne = midStopOneInput.getText();
+        String midStopTwo = midStopTwoInput.getText();
 
-        return new Object[]{routeName};
+        return new Object[]{routeName, midStopOne, midStopTwo};
     }
 
     public JPanel getRouteManagementPanel() {

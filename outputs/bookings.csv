@@ -1,2 +1,2 @@
-bookingID,bookingDate
-BOO-bcc9a550-2,2020-10-10
+bookingID,bookingDate,adultTicket,childTicket,concessionTicket
+BOO-bc9f68d2-e,2020-10-10,1,2,3
